@@ -32,7 +32,8 @@ module.exports.runMessageService = (server) => {
       origin: "https://ptit-job-portal.vercel.app",
       methods: ["GET", "POST"],
       transports: ["websocket", "polling"],
-      credentials: true
+      credentials: true,
+      allowedHeaders:["Access-Control-Allow-Origin"],
     },
     connectionStateRecovery: {
       maxDisconnectionDuration: 2 * 60 * 1000,
