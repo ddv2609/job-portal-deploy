@@ -31,13 +31,15 @@ module.exports.runMessageService = (server) => {
     cors: {
       // origin: "https://ptit-job-portal.vercel.app",
       origin: ["https://ptit-job-portal.vercel.app", "https://ptit-job-portal.vercel.app:80"],
-      methods: ["GET", "PATCH", "POST", "PUT"],
+      methods: ["GET", "POST"],
+      transports: ["websocket", "polling"],
       credentials: true
     },
     connectionStateRecovery: {
       maxDisconnectionDuration: 2 * 60 * 1000,
       skipMiddlewares: true,
-    }
+    },
+    allowEIO3: true,
   });
 
   io.on("connection", (socket) => {
