@@ -1,1 +1,1 @@
-export const API_DOMAIN = "https://job-portal-api.vercel.app"
+export const API_DOMAIN = "https://api-job-portal.vercel.app"
