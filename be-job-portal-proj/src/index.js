@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 // Middleware for CORS policy
 app.use(cors({
-  origin: ["https://job-portal.vercel.app"],
+  origin: ["https://ptit-job-portal.vercel.app"],
   credentials: true,  
 }));
 
