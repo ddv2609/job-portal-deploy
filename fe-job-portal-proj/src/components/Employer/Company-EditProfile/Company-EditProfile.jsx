@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Company-EditProfile.module.css';
 import { useNavigate } from 'react-router-dom';
-import { Col, Row } from "antd";
+import { Col, message, Form, Button, Input, Select, DatePicker } from "antd";
+import { PiBuildingApartmentBold } from "react-icons/pi";
+import { HiBuildingOffice2 } from "react-icons/hi2";
+import { TbBuildingCommunity } from "react-icons/tb";
 import Address from "../../Address/Address";
 import axios from "axios";
+import Avatar from "../../Avatar/Avatar";
+import { useForm } from 'antd/es/form/Form';
 
 const EditCompanyProfile = () => {
   const navigate = useNavigate();
-
-
 
   const [cities, setCities] = useState('Hà Nội');
   const [districts, setDistricts] = useState('Hà Đông');
   const [wards, setWards] = useState('Mỗ Lao');
   const [location, setLocation] = useState('116 Hà Nội');
+  const [data, setData] = useState();
 
 
   useEffect(() => {
@@ -84,11 +88,13 @@ const EditCompanyProfile = () => {
 
   // State for form fields
   const [logo, setLogo] = useState(null); // Store the selected file
-  const [companyName, setCompanyName] = useState('Ptit');
-  const [introduction, setIntroduction] = useState('Chúng tôi là một công ty hàng đầu trong lĩnh vực XYZ, cam kết mang đến sản phẩm và dịch vụ chất lượng cao.');
-  const [phoneNumber, setPhoneNumber] = useState('2323232323');
-  const [employees, setEmployees] = useState('100');
-
+  const [companyName, setCompanyName] = useState('');
+  const [introduction, setIntroduction] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [employees, setEmployees] = useState('');
+  const [form] = Form.useForm();
+  const [messageApi, contextMessageHolder] = message.useMessage();
+  const [loading, setLoading] = useState(true);
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -101,109 +107,131 @@ const EditCompanyProfile = () => {
   };
 
   const handleSave = () => {
-    navigate('/company-profile');
-  };
+    form
+      .validateFields()
+      .then(async (values) => {
+        setLoading(true);
+        values.locations = [{
+          detail: values.detail,
+          ward: values.ward,
+          district: values.district,
+          province: values.province,
+        }]
+        console.log(values);
+        await axios.post('http://localhost:8000/api/company/info',values, {
+          withCredentials: true,
+        })
+          .then(res => {
+            console.log(res.data);
+            const info = res.data.info;
+            
+            messageApi.success("Cập nhật thành công!");
+          })
+          .catch(err => {
+            console.error(err);
+            messageApi.error(err.response?.data?.message || "Có lỗi xảy ra!");
+          })
+          .finally(() => {
+            setLoading(false);
+ //           console.log(values);
+          })
+      })
 
+  }
   return (
-    <div className={styles.container}>
+    <div>
+    {contextMessageHolder}
+    <Form
+      form={form}
+      name="update_info"
+      layout="vertical"
+      className={styles.container}
+    >
       <h1>Chỉnh sửa hồ sơ công ty</h1>
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Logo</label>
-        <input
-          className={styles.input}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
-        {logo && <img src={logo} alt="Company Logo Preview" className={styles.logoPreview} />}
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Tên công ty</label>
-        <input
-          className={styles.input}
-          type="text"
-          value={companyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Giới thiệu về công ty</label>
-        <textarea
-          className={styles.textarea}
-          value={introduction}
-          onChange={(e) => setIntroduction(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Địa Chỉ</label>
-        <input
-          className={styles.input}
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-      </div>
-
-      <Row gutter={[32, 0]}>
-        <Col lg={12}>
-          <Address
-            label="Địa điểm làm việc"
-            type="province" size="large" 
-            options={cities}
-            message="Vui lòng chọn tỉnh/thành phố làm việc"
-            placeholder="Chọn tỉnh/thành phố"
-            onSelect={handleSelectCitites}
+      <div >
+          <Avatar
+            API={{
+              upload: "http://localhost:8000/api/company/avatar",
+              delete: "http://localhost:8000/api/company/avatar"
+            }}
           />
-        </Col>
-        <Col lg={12}>
-          <Address
-            label="Quận/huyện"
-            type="district" size="large"
-            options={districts} 
-            message="Vui lòng chọn quận/huyện làm việc"
-            placeholder="Chọn quận/huyện"
-            onSelect={handleSelectDistricts}
-          />
-        </Col>
-        <Col lg={12}>
-          <Address
-            label="Xã/phường"
-            type="ward" size="large"
-            options={wards}
-            message="Vui lòng chọn xã/phường làm việc"
-            placeholder="Chọn xã/phường"
-          />
-        </Col>
-      </Row>
-
-
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Số điện thoại</label>
-        <input
-          className={styles.input}
-          type="text"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
       </div>
+        <Form.Item
+          label="Tên công ty"
+          name="companyName"
+        >
+          <Input placeholder="Tên công ty mới" />
+        </Form.Item>
 
-      <div className={styles.formGroup}>
-        <label className={styles.label}>Số lượng nhân lực</label>
-        <input
-          className={styles.input}
-          type="number"
-          value={employees}
-          onChange={(e) => setEmployees(e.target.value)}
-        />
-      </div>
+        <Form.Item
+          label="Giới thiệu công ty"
+          name="introduction"
+        >
+          <Input placeholder="Hãy nhập lời giới thiệu thật oách" />
+        </Form.Item>
 
-      <div className={styles.formActions}>
-        <button className={styles.saveButton} onClick={handleSave}>Lưu</button>
-        <button className={styles.cancelButton} onClick={() => navigate('/employer/company-profile')}>Hủy</button>
-      </div>
+        <Form.Item
+          label="Địa chỉ"
+          name="address"
+        >
+          <Input placeholder="Nhập địa chỉ của bạn" />
+        </Form.Item>
+
+        <Col span={8}></Col>
+            <Col span={6}>
+              <Address
+                label="Tỉnh/thành phố"
+                initialValue={data?.locations && data?.locations.length > 0 ? data.locations[0]?.province : "Không xác định"}
+                type="province" suffixIcon={<PiBuildingApartmentBold />}
+                options={cities}
+                required={false}
+                placeholder="Chọn tỉnh/thành phố"
+                onSelect={handleSelectCitites}
+              />
+            </Col>
+            <Col span={6}>
+              <Address
+                label="Quận/huyện"
+                initialValue={data?.locations && data?.locations.length > 0 ? data.locations[0]?.district : "Không xác định"}
+                type="district"
+                options={districts} suffixIcon={<HiBuildingOffice2 />}
+                required={false}
+                placeholder="Chọn quận/huyện"
+                onSelect={handleSelectDistricts}
+              />
+            </Col>
+            <Col span={6}>
+              <Address
+                label="Xã/phường"
+                initialValue={data?.locations && data?.locations.length > 0 ? data.locations[0]?.ward : "Không xác định"}
+                type="ward"
+                options={wards} suffixIcon={<TbBuildingCommunity />}
+                required={false}
+                placeholder="Chọn xã/phường"
+              />
+            </Col>
+
+        <Form.Item
+          label="Số điện thoại"
+          name="phoneNumber"
+        >
+          <Input placeholder="Nhập số điện thoại tuyển dụng của công ty" />
+        </Form.Item>
+
+        <Form.Item
+          label="Số lượng nhân lực"
+          name="employees"
+        >
+          <Input placeholder="Nhập quy mô nhân viên của công ty" />
+        </Form.Item>
+
+        <Form.Item>
+          <div className={styles.formActions}>
+            <Button className={styles.saveButton} onClick={handleSave}>Lưu</Button>
+            <Button className={styles.cancelButton} onClick={() => navigate('/employer/employer-profile')}>Hủy</Button>
+          </div>          
+        </Form.Item>
+    </Form>
     </div>
   );
 };

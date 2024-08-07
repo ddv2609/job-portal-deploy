@@ -4,7 +4,6 @@ import styles from './Company-Profile.module.css';
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_DOMAIN } from '../../../constants';
 
 function CompanyProflie() {
     const [loading, setLoading] = useState(true);
@@ -14,12 +13,12 @@ function CompanyProflie() {
     const [introduct, setIntroduct] = useState(null);
     const [taxCode, setTaxCode] = useState(null);
     const [companySize, setCompanySize] = useState(null); 
-    const [address, setAddress] = useState();
+    const [address, setAddress] = useState([]);
     const [avatar, setAvatar] = useState(null);
 
     const getCompany = () => {
         setLoading(true);
-        axios.get(`${API_DOMAIN}/api/company/info`, {
+        axios.get(`http://localhost:8000/api/company/info`, {
             withCredentials: true,
         })
             .then(res => {
@@ -28,6 +27,10 @@ function CompanyProflie() {
                 setCompanySize(res.data.info.companySize);
                 setTaxCode(res.data.info.taxCode);
                 setWebSite(res.data.info.website);
+                setAddress(res.data.info.address);
+ //               setProvince(res.data.info.address.province);
+ //               setDistrict(res.data.info.address.district);
+ //               setWard(res.data.info.address.ward);
                 setAvatar(res.data.info.logo);
             })
             .catch(err => {
@@ -65,11 +68,11 @@ function CompanyProflie() {
                     </p>
                 </div>
                 <div>
-                    <span className={styles.address}>Địa chỉ: </span>
-                    <span></span>
+                    <p className={styles.address}>Địa chỉ: </p>
+                    <p>{address}</p>
                 </div>
                 <div>
-                    <p className={styles.website}>
+                    <p className={styles.address}>
                         Trang web: <a href='{webSite}'>{webSite}</a>
                     </p>
                 <div>
