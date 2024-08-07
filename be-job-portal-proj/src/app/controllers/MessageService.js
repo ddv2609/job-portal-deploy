@@ -33,7 +33,16 @@ module.exports.runMessageService = (server) => {
       methods: ["GET", "POST"],
       transports: ["websocket", "polling"],
       credentials: true,
-      allowedHeaders:["Access-Control-Allow-Origin"],
+      allowedHeaders: [
+        "Accept",
+        "Authorization",
+        "Content-Type",
+        "Origin",
+        "X-Requested-With",
+        "Accept-Language",
+        "Access-Control-Request-Headers",
+        "Access-Control-Request-Method"
+      ],
     },
     connectionStateRecovery: {
       maxDisconnectionDuration: 2 * 60 * 1000,
