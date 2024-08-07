@@ -313,7 +313,12 @@ class AuthController {
         onlineAt: Date.now(),
       }
     );
-    res.clearCookie("jwt");
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      path: "/",
+      secure: true,
+      sameSite: "none",
+    });
     res.sendStatus(200);
   }
 }
