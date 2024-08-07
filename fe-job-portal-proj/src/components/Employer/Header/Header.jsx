@@ -26,7 +26,7 @@ function Header({ collapsed, setCollapsed, employer }) {
   // const [selectedKeys, setSelectedKeys] = useState(["1.1"]);
 
   const handleLogout = () => {
-    axios.get(`${API_DOMAIN}/auth/logout`, {
+    axios.post(`${API_DOMAIN}/auth/logout`, {}, {
       withCredentials: true,
     })
       .then(_ => {
