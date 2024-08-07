@@ -9,6 +9,7 @@ import Address from "../../Address/Address";
 import axios from "axios";
 import Avatar from "../../Avatar/Avatar";
 import { useForm } from 'antd/es/form/Form';
+import { API_DOMAIN } from '../../../constants';
 
 const EditCompanyProfile = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const EditCompanyProfile = () => {
           province: values.province,
         }]
         console.log(values);
-        await axios.post('http://localhost:8000/api/company/info',values, {
+        await axios.post(`${API_DOMAIN}/api/company/info`,values, {
           withCredentials: true,
         })
           .then(res => {
@@ -151,8 +152,8 @@ const EditCompanyProfile = () => {
       <div >
           <Avatar
             API={{
-              upload: "http://localhost:8000/api/company/avatar",
-              delete: "http://localhost:8000/api/company/avatar"
+              upload: `${API_DOMAIN}/api/company/avatar`,
+              delete: `${API_DOMAIN}/api/company/avatar`
             }}
           />
       </div>

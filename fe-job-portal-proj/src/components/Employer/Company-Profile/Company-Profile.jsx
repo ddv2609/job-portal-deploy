@@ -4,6 +4,7 @@ import styles from './Company-Profile.module.css';
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_DOMAIN } from '../../../constants';
 
 function CompanyProflie() {
     const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ function CompanyProflie() {
 
     const getCompany = () => {
         setLoading(true);
-        axios.get(`http://localhost:8000/api/company/info`, {
+        axios.get(`${API_DOMAIN}/api/company/info`, {
             withCredentials: true,
         })
             .then(res => {

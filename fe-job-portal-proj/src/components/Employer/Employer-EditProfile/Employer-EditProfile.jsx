@@ -10,6 +10,7 @@ import axios from "axios";
 import Avatar from "../../Avatar/Avatar";
 import { setEmployerInfo } from "../../../actions";
 import { useDispatch, useSelector } from "react-redux";
+import { API_DOMAIN } from '../../../constants';
 
 function EmployerEditProfile() {
   const navigate = useNavigate();
@@ -112,7 +113,7 @@ function EmployerEditProfile() {
           province: values.province,
         }]
         console.log(values);
-        await axios.post('http://localhost:8000/api/employer/info',values, {
+        await axios.post(`${API_DOMAIN}/api/employer/info`,values, {
           withCredentials: true,
         })
           .then(res => {
@@ -149,8 +150,8 @@ function EmployerEditProfile() {
         <div >
           <Avatar
             API={{
-              upload: "http://localhost:8000/api/employer/avatar",
-              delete: "http://localhost:8000/api/employer/avatar"
+              upload: `${API_DOMAIN}/api/employer/avatar`,
+              delete: `${API_DOMAIN}/api/employer/avatar`
             }}
           />
         </div>

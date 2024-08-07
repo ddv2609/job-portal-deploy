@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from "../Header/Header";
 import { setEmployerInfo } from "../../../actions";
 import { useDispatch, useSelector } from "react-redux";
+import { API_DOMAIN } from '../../../constants';
 
 const CompanyProfile = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const CompanyProfile = () => {
     const dispatch = useDispatch();
 
     const getEmployer = () => {
-        axios.get(`http://localhost:8000/api/employer/info`, {
+        axios.get(`${API_DOMAIN}/api/employer/info`, {
             withCredentials: true,
         })
             .then(res => {
