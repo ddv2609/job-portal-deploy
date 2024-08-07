@@ -304,7 +304,7 @@ class AuthController {
     });
   }
 
-  // [GET] /auth/logout
+  // [POST] /auth/logout
   async logout(req, res) {
     await Member.updateOne(
       { email: req.user.email },

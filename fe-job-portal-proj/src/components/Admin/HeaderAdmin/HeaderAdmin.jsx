@@ -19,7 +19,7 @@ function HeaderAdmin({ collapsed, setCollapsed, admin, socket }) {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    axios.get(`${API_DOMAIN}/auth/logout`, {
+    axios.post(`${API_DOMAIN}/auth/logout`, {}, {
       withCredentials: true,
     })
       .then(_ => {

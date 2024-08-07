@@ -15,7 +15,7 @@ function Header_CandidateIndex() {
 
     const handleLogout = async () => {
         try {
-            await axios.get(`${API_DOMAIN}/auth/logout`, { withCredentials: true });
+            await axios.post(`${API_DOMAIN}/auth/logout`, {}, { withCredentials: true });
             message.success('Đăng xuất thành công');
             dispatch(logout());
             navigate('/login'); // Redirect to login page after logout
