@@ -54,7 +54,9 @@ const socket = socketClient(API_DOMAIN, {
   },
   query: {
     uid: new Date().getTime(),
-  }
+  },
+  transports: ['websocket'],
+  withCredentials: true,
 });
 
 function App() {
