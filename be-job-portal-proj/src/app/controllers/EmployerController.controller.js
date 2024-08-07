@@ -1,6 +1,6 @@
 const path = require("path");
 const { bucket, getDownloadURL } = require("../../config/firebase");
-const mongoose = require("mongoose");
+
 const Member = require("../models/Member.model");
 const Employer = require("../models/Employer.model");
 const Job = require("../models/Job.model");
