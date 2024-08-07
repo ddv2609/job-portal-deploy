@@ -29,8 +29,9 @@ const flushBuffer = async () => {
 module.exports.runMessageService = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://ptit-job-portal.vercel.app",
-      methods: ["GET", "POST"],
+      // origin: "https://ptit-job-portal.vercel.app",
+      origin: "*",
+      methods: ["GET", "PATCH", "POST", "PUT"],
       credentials: true
     },
     connectionStateRecovery: {
