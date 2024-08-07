@@ -39,8 +39,6 @@ module.exports.runMessageService = (server) => {
     }
   });
 
-  io.set("origins", "https://ptit-job-portal.vercel.app:80");
-
   io.on("connection", (socket) => {
     const time = new Date();
     console.log(`A user connected - ${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
