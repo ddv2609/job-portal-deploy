@@ -125,40 +125,6 @@ class AdminController {
         });
       })
 
-      // await Member.find({
-      //   createdAt: {
-      //     $gte: firstDayOfLastMonth,
-      //     $lte: lastDayOfCurrMonth,
-      //   },
-      //   $or: [
-      //     { role: "candidate", },
-      //     { role: "employer", },
-      //   ]
-      // }).then(members => {
-      //   let [currCandidate, currEmployer, lastCandidate, lastEmployer] = [0, 0, 0, 0];
-      //   members.forEach((member) => {
-      //     if (member.role === "candidate") {
-      //       if (firstDayOfCurrMonth <= member.createdAt && member.createdAt <= lastDayOfCurrMonth)
-      //         currCandidate++;
-      //       else lastCandidate++;
-      //     } else {
-      //       if (firstDayOfCurrMonth <= member.createdAt && member.createdAt <= lastDayOfCurrMonth)
-      //         currEmployer++;
-      //       else lastEmployer++;
-      //     }
-      //   });
-
-      //   return res.json({
-      //     candidates: {
-      //       currAmount: currCandidate,
-      //       lastAmount: lastCandidate,
-      //     },
-      //     employers: {
-      //       currAmount: currEmployer,
-      //       lastAmount: lastEmployer,
-      //     }
-      //   });
-      // })
     } catch (error) {
       console.log(error);
       return res.status(500).json({

@@ -54,7 +54,7 @@ function Dashboard() {
           label: "Số lượng nhà tuyển dụng",
           data: employers.data.statistic
         }, {
-          label: "Số lượng nhà công việc",
+          label: "Số lượng công việc được đăng",
           data: jobs.data.statistic
         },]);
 
@@ -71,7 +71,7 @@ function Dashboard() {
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   return (
     <div className={styles.adminDashboard}>
       {contextHolder}
