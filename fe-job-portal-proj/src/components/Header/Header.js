@@ -23,7 +23,13 @@ function Header(props) {
             <img src="/logo.png" alt="logo" />
             <h1>Portal</h1>
           </div>
-          <div className={styles.nav}></div>
+          <div className={styles.nav}>
+            <ul>
+              <li onClick={() => navigate("/candidate")}><span>Ứng viên</span></li>
+              <li onClick={() => navigate("/employer/posted-jobs")}><span>Nhà tuyển dụng</span></li>
+              <li onClick={() => navigate("/admin/dashboard")}><span>Quản trị viên</span></li>
+            </ul>
+          </div>
           <div className={styles.button_container}>
             <Button
               onClick={handleLoginClick}

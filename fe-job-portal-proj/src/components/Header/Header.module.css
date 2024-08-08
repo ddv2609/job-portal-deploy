@@ -411,3 +411,32 @@
     font-size: 22px;
     color: #00b14f;
 }
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav ul {
+    list-style-type: none;
+    font-size: 16px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.nav ul li {
+    margin: 0 6px;
+}
+
+.nav ul li span {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.nav ul li span:hover {
+    background-color: var(--bg-blur);
+    color: var(--title-color);
+}
