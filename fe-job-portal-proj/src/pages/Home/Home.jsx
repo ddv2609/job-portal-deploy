@@ -17,23 +17,23 @@ function Home() {
         withCredentials: true,
       })
         .then(res => {
-          const online = localStorage.getItem("online");
+          // const online = localStorage.getItem("online");
           localStorage.setItem("selected-key", "1");
-          if (online === "false" || !online) {
-            const role = res.data.info.role;
-            switch (role) {
-              case "admin":
-                nav("/admin/dashboard");
-                break;
-              case "employer":
-                nav("/employer/posted-jobs");
-                break;
-              default:
-                nav("/candidate");
-                break;
-            }
-            localStorage.setItem("online", true);
-          }
+          // if (online === "false" || !online) {
+          //   const role = res.data.info.role;
+          //   switch (role) {
+          //     case "admin":
+          //       nav("/admin/dashboard");
+          //       break;
+          //     case "employer":
+          //       nav("/employer/posted-jobs");
+          //       break;
+          //     default:
+          //       nav("/candidate");
+          //       break;
+          //   }
+          //   localStorage.setItem("online", true);
+          // }
         })
         .catch(err => console.error(err))
     }
