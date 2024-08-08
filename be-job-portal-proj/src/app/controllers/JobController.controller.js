@@ -9,6 +9,7 @@ class JobController {
       const total = await Job.countDocuments();
       const jobs = await Job.find({
         hidden: false,
+        deadlineForSubmission: { $gt: new Date() }
       }).sort({ createdAt: -1 })
         .skip((page - 1) * size)
         .limit(size)
@@ -41,7 +42,10 @@ class JobController {
     console.log(q);
     
     try {
-      const conditions = {};
+      const conditions = {
+        deadlineForSubmission: { $gt: new Date() }
+      };
+      
       if (q)
         conditions.title = { $regex: q, $options: 'i' };
       if (location)
