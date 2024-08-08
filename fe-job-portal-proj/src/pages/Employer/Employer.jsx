@@ -2,7 +2,8 @@ import { Layout, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Content, Header } from "antd/es/layout/layout";
 
-// import AdminSider from "../../components/Admin/AdminSider/AdminSider";
+import { LoadingOutlined } from '@ant-design/icons';
+
 import HeaderAdmin from "../../components/Employer/Header/Header";
 
 import { setEmployerInfo } from "../../actions";
