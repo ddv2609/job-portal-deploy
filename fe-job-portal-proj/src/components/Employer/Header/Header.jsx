@@ -30,6 +30,7 @@ function Header({ collapsed, setCollapsed, employer }) {
       withCredentials: true,
     })
       .then(_ => {
+        localStorage.removeItem("online")
         dispatch(logout());
         nav("/login");
       })

@@ -17,6 +17,7 @@ function Header_CandidateIndex() {
         try {
             await axios.get(`${API_DOMAIN}/auth/logout`, { withCredentials: true });
             message.success('Đăng xuất thành công');
+            localStorage.removeItem("online")
             dispatch(logout());
             navigate('/login'); // Redirect to login page after logout
         } catch (error) {

@@ -21,6 +21,7 @@ class AuthController {
     const member = await Member.findOneAndUpdate(
       { email: email },
       {
+        online: true,
         onlineAt: Date.now(),
       },
       { new: true }
@@ -339,6 +340,11 @@ class AuthController {
       })
 
       if (isAllow) {
+        const member = await Member.findOne({
+          email: info.email
+        }).select("online");
+
+        info.online = member.online;
         return res.json({
           info,
         })

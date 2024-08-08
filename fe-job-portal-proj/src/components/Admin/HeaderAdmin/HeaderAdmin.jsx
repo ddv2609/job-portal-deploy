@@ -24,6 +24,7 @@ function HeaderAdmin({ collapsed, setCollapsed, admin, socket }) {
     })
       .then(_ => {
         socket.emit("leave");
+        localStorage.removeItem("online");
         dispatch(logout());
         nav("/login");
       })

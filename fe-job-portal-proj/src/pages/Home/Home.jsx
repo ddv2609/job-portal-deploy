@@ -17,8 +17,8 @@ function Home() {
         withCredentials: true,
       })
         .then(res => {
-          const online = res.data.info.online;
-          if (!online) {
+          const online = localStorage.getItem("online");
+          if (online === "false" || !online) {
             const role = res.data.info.role;
             switch (role) {
               case "admin":
@@ -28,9 +28,10 @@ function Home() {
                 nav("/employer/posted-jobs");
                 break;
               default:
-                nav("/candidate/");
+                nav("/candidate");
                 break;
             }
+            localStorage.setItem("online", true);
           }
         })
         .catch(err => console.error(err))
