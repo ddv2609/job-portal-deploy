@@ -66,7 +66,7 @@ function App() {
           <Route path="/candidate/sign-up" element={<CandidateSignUp />} />
           <Route path="/company/company-profile" element={<CompanyProfile />} />
           
-          <Route path="/" element={<Home />}>
+          <Route path="/home" element={<Home />}>
             <Route index element={<SearchJob />} />
             <Route path="view-detail-job/:jobId" element={<ViewDetailJob />}/>
           </Route>
