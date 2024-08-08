@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Spin } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../../components/FooterMain/Footer";
 import HeaderCadidateIdex from '../../components/Header/Header_CandidateIndex';
