@@ -328,7 +328,7 @@ class AuthController {
 
     if (token) {
       let isAllow = true, info;
-      jwt.verify(token, keys.jwtSecretKey, (err, decoded) => {
+      jwt.verify(token, process.env.jwtSecretKey, (err, decoded) => {
         // err.name === "TokenExpiredError"
 
         if (err) {
