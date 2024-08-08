@@ -18,6 +18,7 @@ function Home() {
       })
         .then(res => {
           const online = localStorage.getItem("online");
+          localStorage.setItem("selected-key", "1");
           if (online === "false" || !online) {
             const role = res.data.info.role;
             switch (role) {

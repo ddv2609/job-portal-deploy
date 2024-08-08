@@ -54,7 +54,10 @@ function CandidateLogin() {
         console.log(err)
         messageApi.error(`Đăng nhập thất bại. ${err.response?.data.message || ""}`, 10);
       })
-      .finally(() => setLoading(false))
+      .finally(() => {
+        setLoading(false);
+        localStorage.setItem("selected-key", "1");
+      })
   }
 
   return (
