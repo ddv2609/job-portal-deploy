@@ -270,7 +270,7 @@ class CandidateController {
       await Candidate.updateOne({
         _id: uid
       }, {
-        $push: {
+        $addToSet: {
           saveJobs: jobId,
         }
       });
