@@ -177,7 +177,7 @@ class CompanyController {
 
       blobStream.on("finish", async () => {
         const url = await getDownloadURL(blob);
-        await Company.updateOne({ _id: req.user.company }, {
+        await Company.updateOne({ _id: req.user.companyId }, {
           logo: url,
         });
 
@@ -201,8 +201,8 @@ class CompanyController {
       const [files] = await bucket.getFiles({ prefix: `employer/${req.user.id}/company` });
       await Promise.all(files.map(file => file.delete()));
 
-      await Company.updateOne({ _id: req.user.company }, {
-        avatar: null,
+      await Company.updateOne({ _id: req.user.companyId }, {
+        logo: null,
       });
 
       res.sendStatus(200);

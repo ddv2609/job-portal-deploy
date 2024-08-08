@@ -341,6 +341,27 @@ class CandidateController {
       });
     }
   }
+
+    // [GET] /api/candidate/applied-jobs
+  async getAppliedJobs(req, res) {
+    const { uid } = req.user;
+
+    try {
+      const applications = await Application
+        .find({ candidate: uid })
+        .populate("job");
+
+      return res.json({
+        applications,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: error.toString(),
+      });
+    }
+  }
+
 }
 
 module.exports = new CandidateController;

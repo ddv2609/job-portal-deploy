@@ -1,4 +1,3 @@
-//import { Avatar, message } from "antd";
 import React from 'react';
 import styles from './Company-Profile.module.css';
 import axios from 'axios';
@@ -29,9 +28,6 @@ function CompanyProflie() {
                 setTaxCode(res.data.info.taxCode);
                 setWebSite(res.data.info.website);
                 setAddress(res.data.info.address);
- //               setProvince(res.data.info.address.province);
- //               setDistrict(res.data.info.address.district);
- //               setWard(res.data.info.address.ward);
                 setAvatar(res.data.info.logo);
             })
             .catch(err => {
@@ -43,7 +39,8 @@ function CompanyProflie() {
         getCompany();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    
+    
     const navigate = useNavigate();
     return (
         <div>
@@ -53,7 +50,7 @@ function CompanyProflie() {
             {avatar ? (
                     <img 
                         style={{width:"200px", height:"200px"}} 
-                        src={avatar} alt='anh'
+                        src={avatar || "/company.png"} alt='anh'
                     />
                 ):(
                     <p></p>

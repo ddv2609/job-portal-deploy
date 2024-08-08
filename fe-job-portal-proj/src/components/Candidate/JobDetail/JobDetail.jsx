@@ -1,22 +1,22 @@
 import { Button, Col, ConfigProvider, message, Row, Space, Spin } from "antd";
 
-import { MdAttachMoney, MdOutlineWorkOutline, MdStars } from "react-icons/md";
-import { FaClock, FaHourglassHalf, FaLocationDot, FaRegHeart, FaTransgender } from "react-icons/fa6";
-import { BiSolidGroup } from "react-icons/bi";
 import { LoadingOutlined } from '@ant-design/icons';
+import { BiSolidGroup } from "react-icons/bi";
+import { FaClock, FaHourglassHalf, FaLocationDot, FaRegHeart, FaTransgender } from "react-icons/fa6";
 import { FiSend } from "react-icons/fi";
-import { LuBox } from "react-icons/lu";
 import { IoOpenOutline } from "react-icons/io5";
+import { LuBox } from "react-icons/lu";
+import { MdAttachMoney, MdOutlineWorkOutline, MdStars } from "react-icons/md";
 
 import axios from "axios";
 
-import styles from "./JobDetail.module.css";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { adminTableThemes } from "../../../helper/themes";
 import TextArea from "antd/es/input/TextArea";
-import ModalApply from "../ModalApply/ModalApply";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { adminTableThemes } from "../../../helper/themes";
+import ModalApply from "../ModalApply/ModalApply";
+import styles from "./JobDetail.module.css";
 import { API_DOMAIN } from "../../../constants";
 
 const getDate = (date) => {
@@ -39,6 +39,8 @@ function JobDetail() {
   const [jobInfo, setJobInfo] = useState(null);
   const [openModalApply, setOpenModalApply] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const [saving, setSaving] = useState(false);
+  const [savedJobs, setSavedJobs] = useState([]);
 
 
   const items = [
@@ -79,11 +81,43 @@ function JobDetail() {
         console.error(err);
       })
   }
+
+  const checkIfJobIsSaved = async () => {
+    try {
+      const res = await axios.get(`${API_DOMAIN}/api/candidate/all-saved-jobs`, {
+        withCredentials: true
+      });
+      setSavedJobs(res.data.savedJobs);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     getDetailJobInfo();
+    if (candidate.role) {
+      checkIfJobIsSaved();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
+  const handleSaveJob = async () => {
+    if (savedJobs.some(job => job.jobId === jobId)) {
+      messageApi.info('Bạn đã lưu tin này rồi.');
+      return;
+    }
+    try {
+      await axios.post(`${API_DOMAIN}/api/candidate/save-job/`, { jobId }, {
+        withCredentials: true
+      });
+      messageApi.success('Lưu công việc thành công!');
+      setSavedJobs([...savedJobs, { jobId }]);
+    } catch (error) {
+      console.error(error);
+      messageApi.error('Có lỗi xảy ra khi lưu công việc.');
+    }
+  }
+
   return (
     <>
       <ConfigProvider theme={adminTableThemes}>
@@ -148,7 +182,7 @@ function JobDetail() {
                                   }
                                 }
                               }}>
-                                <Button icon={<FaRegHeart />} size="large" className={styles.btnSave}>Lưu tin</Button>
+                                <Button icon={<FaRegHeart />} size="large" className={styles.btnSave} onClick={handleSaveJob}>Lưu tin</Button>
                               </ConfigProvider>
                             </div>
                           ) : (<></>)}
@@ -195,7 +229,14 @@ function JobDetail() {
                                       }
                                     }
                                   }}>
-                                    <Button size="large" className={styles.btnSave}>Lưu tin</Button>
+                                    <Button 
+                                      size="large" 
+                                      className={styles.btnSave} 
+                                      onClick={handleSaveJob} 
+                                      loading={saving}
+                                    >
+                                      Lưu tin
+                                    </Button>
                                   </ConfigProvider>
                                 </Space>
                               </div>

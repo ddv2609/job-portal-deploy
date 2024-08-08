@@ -13,5 +13,8 @@ router.delete("/avatar/", candidateController.deleteAvatar);
 router.post("/avatar/", uploadImage.single("file"), candidateController.updateAvatar);
 router.post("/info/", candidateController.updateInfo);
 router.get("/info/", candidateController.getInfo);
+router.get("/applied-jobs/", candidateController.getAppliedJobs);
+router.get("/all-saved-jobs/", candidateController.getAllSavedJobs);
+router.post("/save-job/", candidateController.saveJob);
 
 module.exports = router;

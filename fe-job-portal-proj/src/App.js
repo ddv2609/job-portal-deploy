@@ -28,21 +28,19 @@ import CompanyEditProflie from "./components/Employer/Company-EditProfile/Compan
 import CompanyProflie from "./components/Employer/Company-Profile/Company-Profile";
 import EmployerEditProfile from "./components/Employer/Employer-EditProfile/Employer-EditProfile";
 import EmployerProfile from "./components/Employer/Employer-Profile/Employer-Profile";
-// import CompanyJobDetail from "./components/Employer/Job-Detail/Job-Detail";
 import CompanyJobEdit from "./components/Employer/Job-Edit/Job-Edit";
-// import CompanyJobPost from "./components/Employer/Job-Post/Job-Post";
-// import CompanyJob from "./components/Employer/Job/Job";
 import CandidateIndex from "./pages/CandidateIndex/CandidateIndex";
 
 import { ConfigProvider } from "antd";
 import Account from "./components/Admin/Account/Account";
 import Chat from "./components/Admin/Chat/Chat";
+import AppliedJobs from "./components/Candidate/AppliedJobs/AppliedJobs";
 import ViewDetailJob from "./components/Candidate/JobDetail/JobDetail";
+import SearchJob from "./components/Candidate/Search/SearchJob";
 import { themes } from "./helper";
 import UpdateCandidateInfo from "./pages/CVManagement/UpdateCandidateInfo";
-import SearchJob from "./components/Candidate/Search/SearchJob";
+import Error404 from "./pages/Error/Error404";
 import { API_DOMAIN } from "./constants";
-// import JobDetail from "./components/Employer/Job-Detail/Job-Detail";
 
 const socket = socketClient(API_DOMAIN, {
   reconnectionAttempts: 5,
@@ -54,9 +52,7 @@ const socket = socketClient(API_DOMAIN, {
   },
   query: {
     uid: new Date().getTime(),
-  },
-  // transports: ['websocket'],
-  withCredentials: true,
+  }
 });
 
 function App() {
@@ -80,6 +76,7 @@ function App() {
             <Route path="cv-management" element={<CVManagementPage />} />
             <Route path="update-info" element={<UpdateCandidateInfo />} />
             <Route path="view-detail-job/:jobId" element={<ViewDetailJob />}/>
+            <Route path="applied-jobs" element={<AppliedJobs />} />
           </Route>
           
           <Route path="/employer" element={<Employer />}>
@@ -111,6 +108,7 @@ function App() {
             <Route path="history" element={<History />} />
           </Route>
           <Route path="/verify/:status" element={<VerifyEmail />} />
+          <Route path='/*' element={<Error404 />} />
         </Routes>
       </ConfigProvider>
     </div>
