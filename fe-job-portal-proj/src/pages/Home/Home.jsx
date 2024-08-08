@@ -17,17 +17,20 @@ function Home() {
         withCredentials: true,
       })
         .then(res => {
-          const role = res.data.info.role;
-          switch (role) {
-            case "admin":
-              nav("/admin/dashboard");
-              break;
-            case "employer":
-              nav("/employer/posted-jobs");
-              break;
-            default:
-              nav("/candidate/");
-              break;
+          const online = res.data.info.online;
+          if (!online) {
+            const role = res.data.info.role;
+            switch (role) {
+              case "admin":
+                nav("/admin/dashboard");
+                break;
+              case "employer":
+                nav("/employer/posted-jobs");
+                break;
+              default:
+                nav("/candidate/");
+                break;
+            }
           }
         })
         .catch(err => console.error(err))
