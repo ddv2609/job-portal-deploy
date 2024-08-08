@@ -16,7 +16,7 @@ import styles from "./ModalPostJob.module.css";
 
 const primaryColor = "#00b14f";
 
-function ModalPostJob({ apiUpdate, data, setModalData, handleModalPostJob = () => { }, categories, messageApi }) {
+function ModalPostJob({ apiUpdate=null, data, setModalData, handleModalPostJob = () => { }, categories, messageApi }) {
   const [loading, setLoading] = useState(false);
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -124,13 +124,19 @@ function ModalPostJob({ apiUpdate, data, setModalData, handleModalPostJob = () =
       }}
     >
       <Modal
-        title={<h3 className={styles.heading}>{data.title ? "Chỉnh sửa công việc" : "Đăng tuyển công việc mới"}</h3>}
+        title={<h3 className={styles.heading}>{
+          apiUpdate 
+            ? (data.title ? "Chỉnh sửa công việc" : "Đăng tuyển công việc mới") 
+            : "Xem thông tin công việc được đăng"
+        }</h3>}
         maskClosable={false}
         open={data !== null}
         cancelText="Hủy"
         okText={data.title ? "Cập nhật" : "Thêm mới"}
         onCancel={handleCancelForm}
         onOk={handleUpdate}
+        okButtonProps={{ style: { display: messageApi ? "inline-block" : "none" } }}
+        cancelButtonProps={{ style: { display: messageApi ? "inline-block" : "none" } }}
         confirmLoading={loading}
         width={"100%"}
       >

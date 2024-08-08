@@ -4,13 +4,15 @@ import axios from "axios";
 
 import { MdHideSource, MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaCheckToSlot } from "react-icons/fa6";
+import { FaCheckToSlot, FaRegPenToSquare } from "react-icons/fa6";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+
+import { API_DOMAIN } from "../../../constants";
 
 import styles from "./PostedJob.module.css";
 import ManagementTable from "../ManagementTable/ManagementTable";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { API_DOMAIN } from "../../../constants";
+import ModalPostJob from "../../Employer/ModalPostJob/ModalPostJob";
 
 function PostedJob() {
   const { admin } = useOutletContext();
@@ -28,6 +30,8 @@ function PostedJob() {
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(null);
   const [confirmDeleteLoading, setConfirmDeleteLoading] = useState(false);
+
+  const [jobInfo, setJobInfo] = useState(null);
 
   const [tableParams, setTableParams] = useState({
     pagination: {
@@ -192,11 +196,23 @@ function PostedJob() {
     {
       title: "Kinh nghiệm",
       dataIndex: "experience",
+      filters: [
+        { text: "Chưa có kinh nghiệm", value: "Chưa có kinh nghiệm", },
+        { text: "Dưới 1 năm", value: "Dưới 1 năm", },
+        { text: "1 năm", value: "1 năm", },
+        { text: "2 năm", value: "2 năm", },
+        { text: "3 năm", value: "3 năm", },
+        { text: "4 năm", value: "4 năm", },
+        { text: "5 năm", value: "5 năm", },
+        { text: "Trên 5 năm", value: "Trên 5 năm", },
+      ],
+      onFilter: (value, record) => record.experience.toLowerCase().indexOf(value.toLowerCase()) === 0,
       ellipsis: true,
     },
     {
       title: "Số lượng",
       dataIndex: "quantity",
+      sorter: (a, b) => a.quantity - b.quantity,
       align: "center",
     },
     {
@@ -216,9 +232,49 @@ function PostedJob() {
       ellipsis: true,
     },
     {
+      title: "Trạng thái",
+      render: (record) => {
+        const deadline = new Date(record.deadlineForSubmission);
+        const curr = new Date();
+        if (deadline < curr)
+          return <span >
+            <Tag color="red">
+              Quá hạn
+            </Tag>
+          </span>;
+        return <span >
+          <Tag color="green">
+            {`Còn ${Math.ceil((deadline.getTime() - curr.getTime()) / (1000 * 3600 * 24))} ngày`}
+          </Tag>
+        </span>;
+      },
+      filters: [
+        {
+          text: "Còn hạn",
+          value: "valid",
+        },
+        {
+          text: "Quá hạn",
+          value: "invalid",
+        },
+      ],
+      onFilter: (value, record) => {
+        const deadline = new Date(record.deadlineForSubmission);
+        const curr = new Date();
+        return value === "valid" ? deadline >= curr : deadline < curr;
+      },
+      width: "10%",
+      align: "center"
+    },
+    {
       title: "Hành động",
       render: (record) => (
         <Space size="small" align="start">
+          <Tooltip title="Chỉnh sửa" placement="topRight">
+            <span className={styles.update} onClick={() => setJobInfo(record)}>
+              <FaRegPenToSquare />
+            </span>
+          </Tooltip>
           <Tooltip title="Ẩn" placement="topRight">
             <Popconfirm title="Ẩn công việc" description="Bạn chắc chắn muốn ẩn công việc này?" placement="topRight"
               icon={<QuestionCircleOutlined style={{ color: "#ff4d4f" }} />} open={openConfirmHidden === record._id}
@@ -301,6 +357,13 @@ function PostedJob() {
           data: data,
         }]}
       />
+      {jobInfo !== null ? (
+        <ModalPostJob
+          data={jobInfo}
+          categories={[]}
+          setModalData={setJobInfo}
+        ></ModalPostJob>
+      ) : <></>}
     </>
   );
 }
