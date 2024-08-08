@@ -321,6 +321,32 @@ class AuthController {
     });
     res.sendStatus(200);
   }
+
+  // [POST] /auth/navigation
+  async navigation(req, res) {
+    const token = req.cookies.jwt;
+
+    if (token) {
+      let isAllow = true, info;
+      jwt.verify(token, keys.jwtSecretKey, (err, decoded) => {
+        // err.name === "TokenExpiredError"
+
+        if (err) {
+          isAllow = false;
+        }
+
+        info = decoded;
+      })
+
+      if (isAllow) {
+        return res.json({
+          info,
+        })
+      }
+    }
+
+    return res.sendStatus(404);
+  }
 }
 
 module.exports = new AuthController();

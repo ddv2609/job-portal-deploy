@@ -2,9 +2,35 @@ import Header from "../../components/Header/Header";
 import styles from "./Home.module.css";
 import { ConfigProvider } from "antd";
 import Footer from "../../components/FooterMain/Footer";
+import { API_DOMAIN } from "../../constants";
 // import SearchJob from "../../components/Candidate/Search/SearchJob";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 function Home() {
+
+  const nav = useNavigate();
+
+  useEffect(() => {
+    axios.post(`${API_DOMAIN}/auth/navigation`, {}, {
+      withCredentials: true,
+    })
+      .then(res => {
+        const role = res.data.info.role;
+        switch (role) {
+          case "admin":
+            nav("/admin/dashboard");
+            break;
+          case "employer":
+            nav("/employer/posted-jobs");
+            break;
+          default:
+            nav("/candidate/");
+            break;
+        }
+      })
+      .catch(err => console.error(err))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <ConfigProvider
