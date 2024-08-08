@@ -30,6 +30,7 @@ function Employer() {
     })
       .then(res => {
         const info = res.data.info;
+        setLoading(false);
         dispatch(setEmployerInfo({
           companyId: info.company,
           uid: info._id,
@@ -44,43 +45,44 @@ function Employer() {
         if (400 <= code && code < 500)
           nav("/login");
       })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div className={styles.adminPage}>
+      {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: "#00b14f" }} spin />} fullscreen /> : (
         <Layout>
-        {/* <AdminSider collapsed={collapsed} /> */}
-        <Layout
-          style={{
-            maxHeight: '100vh',
-          }}
-        >
-          <Header
+          <Layout
             style={{
-              padding: 0,
-              backgroundColor: "#FFF",
+              maxHeight: '100vh',
             }}
           >
-            <HeaderAdmin
-              collapsed={collapsed}
-              setCollapsed={setCollapsed}
-              employer={employer}
-            />
-          </Header>
-          <Content
-            style={{
-              padding: "16px",
-              borderRadius: "8px",
-              height: '100vh',
-              overflowY: 'scroll',
-              scrollbarWidth: 'none',
-            }}
-          >
-            <Outlet context={{ data }} />
-          </Content>
+            <Header
+              style={{
+                padding: 0,
+                backgroundColor: "#FFF",
+              }}
+            >
+              <HeaderAdmin
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+                employer={employer}
+              />
+            </Header>
+            <Content
+              style={{
+                padding: "16px",
+                borderRadius: "8px",
+                height: '100vh',
+                overflowY: 'scroll',
+                scrollbarWidth: 'none',
+              }}
+            >
+              <Outlet context={{ data }} />
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      )}
     </div>
   );
 }
