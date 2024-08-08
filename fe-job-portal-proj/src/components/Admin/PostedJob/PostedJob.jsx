@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { MdHideSource, MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaCheckToSlot, FaRegPenToSquare } from "react-icons/fa6";
+import { FaCheckToSlot, FaEye } from "react-icons/fa6";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import { API_DOMAIN } from "../../../constants";
@@ -270,9 +270,9 @@ function PostedJob() {
       title: "Hành động",
       render: (record) => (
         <Space size="small" align="start">
-          <Tooltip title="Chỉnh sửa" placement="topRight">
+          <Tooltip title="Xem thông tin" placement="topRight">
             <span className={styles.update} onClick={() => setJobInfo(record)}>
-              <FaRegPenToSquare />
+              <FaEye />
             </span>
           </Tooltip>
           <Tooltip title="Ẩn" placement="topRight">
